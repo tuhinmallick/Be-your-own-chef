@@ -31,7 +31,7 @@ def ingredients(text_list, item_list, without_mapping=False):
 
     output = []
     for text in text_list:
-        map_dict = map_dict if not without_mapping else {}
+        map_dict = {} if without_mapping else map_dict
         text = ingredient(text, map_dict)
         output.append(text)
 

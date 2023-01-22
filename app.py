@@ -80,9 +80,6 @@ class TextGeneration:
                 data["ingredients"] = [s.strip() for s in section.replace("ingredients:", "").split('--')]
             elif section.startswith("directions:"):
                 data["directions"] = [s.strip() for s in section.replace("directions:", "").split('--')]
-            else:
-                pass
-
         return data
 
     def load_pipeline(self):
@@ -110,14 +107,9 @@ class TextGeneration:
     def prepare_frame(self, recipe, chef_name):
         frame_path = self.chef_frames[chef_name.lower()]
         food_logo = generate_food_with_logo_image(frame_path, self.logo_frame, recipe["image"])
-        frame = generate_recipe_image(
-            recipe,
-            self.main_frame,
-            food_logo,
-            self.fonts,
-            bg_color="#ffffff"
+        return generate_recipe_image(
+            recipe, self.main_frame, food_logo, self.fonts, bg_color="#ffffff"
         )
-        return frame
 
     def generate(self, items, generation_kwargs):
         recipe = self.dummy_outputs[0]
@@ -222,11 +214,7 @@ def main():
             index=0
         )
 
-        if prompt == "Custom":
-            prompt_box = ""
-        else:
-            prompt_box = EXAMPLES[prompt]
-
+        prompt_box = "" if prompt == "Custom" else EXAMPLES[prompt]
         items = st.text_area(
             'Insert your food items here (separated by `,`): ',
             pure_comma_separation(prompt_box, return_list=False),
@@ -246,10 +234,10 @@ def main():
         # else:
         #     get_random_frame = generator.frames[random.randint(0, len(generator.frames)) - 1]
 
-        entered_items.markdown("**Generate recipe for:** " + items)
+        entered_items.markdown(f"**Generate recipe for:** {items}")
         with st.spinner("Generating recipe..."):
 
-            if not isinstance(items, str) or not len(items) > 1:
+            if not isinstance(items, str) or len(items) <= 1:
                 entered_items.markdown(
                     f"**{chef}** would like to know what ingredients do you like to use in "
                     f"your food? "

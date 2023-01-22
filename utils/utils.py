@@ -57,15 +57,12 @@ def image_to_base64(image_array):
 
 def unique_list(seq):
     seen = set()
-    seen_add = seen.add
-    return [x for x in seq if not (x in seen or seen_add(x))]
+    return [x for x in seq if x not in seen and not seen.add(x)]
 
 
 def pure_comma_separation(list_str, return_list=True):
     r = unique_list([item.strip() for item in list_str.lower().split(",") if item.strip()])
-    if return_list:
-        return r
-    return ", ".join(r)
+    return r if return_list else ", ".join(r)
 
 
 def replace_regex(text, map_dict):
