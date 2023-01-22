@@ -11,7 +11,7 @@ def generate_cook_image(query, app_id, app_key):
             return None
 
         rj = r.json()
-        if "hits" not in rj or not len(rj["hits"]) > 0:
+        if "hits" not in rj or len(rj["hits"]) <= 0:
             return None
 
         data = rj["hits"]
@@ -20,7 +20,6 @@ def generate_cook_image(query, app_id, app_key):
         if "recipe" not in data or "image" not in data["recipe"]:
             return None
 
-        image = data["recipe"]["image"]
-        return image
+        return data["recipe"]["image"]
     except Exception as e:
         return None
